@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'
+        integrity='sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=='
+        crossorigin='anonymous'></script>
+
+    <script src="./CSS/sweetalert.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rampart+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Londrina+Shadow&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Dekko&family=East+Sea+Dokdo&family=Kavivanar&family=Pangolin&family=Permanent+Marker&family=Sriracha&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="./CSS/all.css">
+    <link rel="stylesheet" href="./CSS/pixel.css">
+
+    <title>Game Boy</title>
+    <style>
+        html,
+        body {
+            font-family: 'Press Start 2P', cursive;
+            height: 100%;
+            /* background:linear... 這樣的線性漸層其實是，背景圖片不是單純的背景(background-image)，所以既然是圖片，我們想用的話就需要高度 */
+            background: linear-gradient(#c4ff6e 0%, #8cffa3 50%, #adffda 80%)
+        }
+
+
+        .clearfix::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        .container {
+            top: 0%;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            position: absolute;
+
+            height: 700px;
+            width: 450px;
+
+            /* background: #ffe940; */
+            background: linear-gradient(#fff5c1 0.7%, #ffef73 0.7%, #ffef73 40%, #ffe940 40%, #ffe940 50%);
+            color: #1b60c0;
+            border: 3px solid #1b60c0;
+            border-radius: 15px 15px 15px 15px;
+            border-bottom-right-radius: 25% 20%;
+
+
+            box-sizing: border-box;
+            text-align: center;
+            /* box-shadow:
+                inset 0px -5px 0px 0px #b9ff47,
+                0px 0px 1px 1px #1b60c0,
+                20px 20px 0px 0px #0efff3; */
+            box-shadow:
+                inset 0px -5px 0px 0px #b9ff47,
+                0px 0px 1px 1px #1b60c0;
+        }
+
+        input {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .title {
+            position: fixed;
+            /* background: lightcoral; */
+            left: 50%;
+            transform: translate(-50%, 0%);
+            height: 100px;
+            width: 600px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .title span {
+            text-align: center;
+            line-height: 80px;
+            color: #1b60c0;
+            /* text-shadow: 5px 5px 0px #ffffff,
+                -5px -5px 0px #ffffff; */
+            font-size: 38px;
+        }
+
+        .title .icon-list {
+            float: left;
+        }
+
+        .title .icon-list:nth-child(2) {
+            float: right;
+        }
+
+        #header {
+            height: 30px;
+            box-shadow: inset 0px -7px 0px 0px #b9ff47;
+            width: 100%;
+            border-bottom: 8px double #1b60c0;
+        }
+
+        #header div {
+
+            height: 100%;
+            width: 35px;
+            /* background-color: brown; */
+
+        }
+
+        #header div:first-child {
+            float: left;
+            border-right: 8px double #1b60c0;
+            position: relative;
+
+        }
+
+        #header div:first-child::after {
+            content: 'OFF﹒ON';
+            font-family: 'DotGothic16';
+            font-size: 14px;
+            font-weight: bold;
+            top: 8%;
+            left: 200%;
+            position: absolute;
+            width: 80px;
+            height: 20px;
+            border-radius: 15px;
+            line-height: 15px;
+            /* background: lightcoral; */
+            border: 2px solid #1b60c0;
+        }
+
+        #header div:last-child {
+            float: right;
+            border-left: 8px double #1b60c0;
+        }
+
+        #content {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            background: #ffed66;
+            padding: 25px;
+            padding-bottom: 0px;
+        }
+
+        .contentbox {
+            width: 100%;
+            height: 275px;
+            background: #fff49f;
+
+            border-radius: 15px 15px 15px 15px;
+            border-bottom-right-radius: 25% 20%;
+            padding-top: 30px;
+            padding-left: 50px;
+            padding-right: 50px;
+            padding-bottom: 30px;
+            border: 5px double #1b60c0;
+        }
+
+        .contentbox::before {
+            content: 'DOT MATRIX WITH STEREO SOUND';
+            font-family: 'DotGothic16';
+            font-size: 14px;
+
+            top: 12%;
+            left: 35%;
+            position: absolute;
+            width: 220px;
+            height: 20px;
+            /* border-radius: 15px; */
+            line-height: 15px;
+            font-weight: bolder;
+            background: #fff49f;
+            z-index: 5;
+        }
+
+        .contentbox::after {
+            content: '';
+            font-family: 'DotGothic16';
+            font-size: 14px;
+            font-weight: bold;
+            top: 12%;
+            left: 10%;
+            position: absolute;
+            width: 353px;
+            height: 14px;
+            /* border-radius: 15px; */
+            line-height: 15px;
+            /* background: rgb(255, 0, 0); */
+            border-top: 4px solid #1b60c0;
+            border-bottom: 4px solid #2cffc0;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #cdffc5;
+            position: relative;
+            box-sizing: border-box;
+            border: 4px solid #2671db;
+            border-radius: 5px;
+        }
+
+        .screen::before {
+            content: '';
+            font-family: 'DotGothic16';
+            font-size: 14px;
+            top: 35%;
+            left: -15%;
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            line-height: 15px;
+            border: 1px solid #2671db;
+            font-weight: bolder;
+            background: #8dffd3;
+            z-index: 5;
+        }
+
+        .screen::after {
+            content: 'BATTERY';
+            font-family: 'DotGothic16';
+            font-size: 13px;
+            top: 45%;
+            left: -19%;
+            position: absolute;
+            width: 90px;
+            height: 20px;
+            line-height: 15px;
+            font-weight: bolder;
+            text-align: left;
+        }
+
+        #game {
+            width: 95%;
+            height: 95%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* overflow: hidden; */
+            position: absolute;
+            cursor: url('') 50 50, auto;
+            background: #a1fe8cab;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        #game .word-box {
+            font-size: 19px;
+            font-weight: bolder;
+            font-family: 'DotGothic16', sans-serif;
+            /* background: rgb(0, 17, 167); */
+            position: absolute;
+            width: 100%;
+
+            /* 無法被選取 */
+            user-select: none;
+            /* 無法拖曳 */
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+        }
+
+        #game .word-box>span {
+            margin: 5px;
+        }
+
+        /* #game .word-box>span:first-child {
+            float: left;
+        }
+
+        #game .word-box>span:last-child {
+            float: right;
+        } */
+
+
+        #game .icon-box {
+            position: absolute;
+            bottom: 0;
+            transform: translate();
+            width: 100%;
+            /* background: lightgray; */
+        }
+
+        .number {
+            position: absolute;
+            /* 無法被選取 */
+            user-select: none;
+            /* 無法拖曳 */
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+        }
+
+        /* 忽略點擊事件 */
+        /* pointer-events: none; */
+
+        .nes-btn {
+            border-image-repeat: stretch !important;
+        }
+
+        #game .icon-list {
+            float: right;
+            user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            /* background: lightcoral; */
+        }
+
+        #game .icon-list:nth-child(2) {
+            float: left;
+        }
+
+        #game .trophy {
+            opacity: 0;
+        }
+
+        #footer .footer-top {
+            width: 100%;
+            height: 60px;
+            background: #ffec59;
+            text-align: left;
+            padding-left: 25px;
+            font-family: 'Itim', cursive;
+        }
+
+        #footer .footer-top span {
+            padding-right: 3px;
+            font-size: 23px;
+        }
+
+        #footer .footer-top span:first-child {
+            font-family: 'Kavivanar', cursive;
+            font-weight: bold;
+            font-size: 21px;
+        }
+
+        #footer .footer-top span:nth-child(2) {
+            font-family: 'Bungee Outline', cursive;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 30px;
+        }
+
+        #footer .footer-top i {
+            font-size: 24px;
+        }
+
+        #footer .footer-middle {
+            width: 100%;
+            height: 150px;
+            background: #ffea4c;
+            padding: 25px;
+            padding-left: 35px;
+        }
+
+        #footer .cross-box {
+            height: 110px;
+            width: 110px;
+            float: left;
+            position: relative;
+        }
+
+        .cross-box::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 140px;
+            width: 140px;
+            background: #fff292;
+            border-radius: 50%;
+            border: 3px solid #1b60c0;
+        }
+
+        #footer .cross {
+            height: 110px;
+            width: 110px;
+            float: left;
+            background: #1b60c0;
+            clip-path: polygon(0% 40%, 4% 36%, 36% 36%, 36% 4%, 40% 0%, 60% 0%, 64% 4%, 64% 36%, 96% 36%, 100% 40%, 100% 60%, 96% 64%, 64% 64%, 64% 96%, 60% 100%, 40% 100%, 36% 96%, 36% 64%, 4% 64%, 0% 60%);
+            position: relative;
+        }
+
+        .cross::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 105px;
+            width: 105px;
+            background: #8dffd3;
+            clip-path: polygon(0% 42%, 4% 38%, 38% 38%, 38% 4%, 42% 0%, 58% 0%, 62% 4%, 62% 38%, 96% 38%, 100% 42%, 100% 58%, 96% 62%, 62% 62%, 62% 96%, 58% 100%, 42% 100%, 38% 96%, 38% 62%, 4% 62%, 0% 58%);
+        }
+
+        /* .cross .cross-left {
+            width: 100%;
+            height: 50%;
+            background: lightcoral;
+            transform: translate(0, 50%);
+            position: absolute;
+        } */
+
+        .cross-box .tringle-left {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 7.5px 9px 7.5px 0;
+            border-color: transparent #1b60c0 transparent transparent;
+            position: absolute;
+            top: 50%;
+            left: -10%;
+            transform: translate(0, -50%);
+            /* background: rgb(128, 240, 133); */
+        }
+
+        .cross-box .tringle-right {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 7.5px 0 7.5px 9px;
+            border-color: transparent transparent transparent #1b60c0;
+            position: absolute;
+            top: 50%;
+            right: -10%;
+            transform: translate(0, -50%);
+            /* background: rgb(128, 240, 133); */
+        }
+
+
+        .cross-box .tringle-top {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 7.5px 9px 7.5px;
+            border-color: transparent transparent #1b60c0 transparent;
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            /* background: rgb(128, 240, 133); */
+        }
+
+        .cross-box .tringle-bottom {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 9px 7.5px 0 7.5px;
+            border-color: #1b60c0 transparent transparent transparent;
+            position: absolute;
+            bottom: -10%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            /* background: rgb(128, 240, 133); */
+        }
+
+        .cross .cross-circle {
+            width: 28%;
+            height: 28%;
+            top: 50%;
+            left: 50%;
+            /* background: rgb(9, 255, 0); */
+            border: 4px double #1b60c0ce;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+        }
+
+
+        /* .cross .cross-top {
+            width: 50%;
+            height: 100%;
+            background: rgb(218, 128, 240);
+            transform: translate(50%, 0);
+            position: absolute;
+        } */
+
+
+
+        #footer .button-box {
+            height: 80px;
+            width: 160px;
+            float: right;
+            background: #fff292;
+            border-radius: 45px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 3px solid #1b60c0;
+            transform: translate(0px, 10px) rotate(-30deg);
+        }
+
+        #footer .left {
+            float: left;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: #8dffd3;
+            border: 4px double #1b60c0;
+            position: relative;
+            box-shadow:
+                -1px 6px 0px 0px #b9ff47,
+                inset 1px 3px 0px 0px #ffffffbe;
+        }
+
+        .button-box div::after {
+            content: 'A';
+            top: 140%;
+            left: 0;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            /* background: rgb(240, 128, 128); */
+        }
+
+        .button-box div:last-child:after {
+            content: 'B';
+        }
+
+        #footer .right {
+            float: right;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: #8dffd3;
+            border: 4px double #1b60c0;
+            box-shadow:
+                -1px 6px 0px 0px #b9ff47,
+                inset 1px 3px 0px 0px #ffffffb7;
+            position: relative;
+        }
+
+        #footer .footer-bottom {
+            width: 100%;
+            height: 150px;
+            padding-left: 100px;
+            /* background: #3b5052; */
+            font-size: 0;
+            position: relative;
+        }
+
+        #footer .footer-bottom::after {
+            letter-spacing: 0.05rem;
+            content: 'PHONES';
+            font-family: 'DotGothic16';
+            font-size: 14px;
+            font-weight: bold;
+            top: 78%;
+            left: 35%;
+            position: absolute;
+            width: 75px;
+            height: 20px;
+            border-radius: 15px;
+            line-height: 15px;
+            /* background: lightcoral; */
+            border: 2px solid #1b60c0;
+        }
+
+        #footer .footer-bottom .select-bottom {
+
+            width: 90px;
+            height: 90px;
+            /* background: #54536e; */
+            display: inline-block;
+            transform: translate(10px, 10px) rotate(-30deg);
+        }
+
+        #footer .footer-bottom .start-bottom {
+
+            width: 90px;
+            height: 90px;
+            /* background: #2c2894; */
+            display: inline-block;
+            transform: translate(10px, 10px) rotate(-30deg);
+
+        }
+
+        .circle {
+            width: 65px;
+            height: 24px;
+            margin: auto;
+            border: 2px solid #1b60c0;
+            border-radius: 10px;
+            /* background: lightcyan; */
+            padding: 4px 6px;
+            margin-bottom: 4px;
+        }
+
+        .circle div {
+            height: 100%;
+            width: 100%;
+            border: 3px solid #1b60c0;
+            border-radius: 10px;
+            background: #d8fff0;
+            box-shadow: 0px 2px 0px 0px #b9ff47;
+        }
+
+        .circle div button {
+            box-sizing: border-box;
+            border: 0;
+            background-color: rgba(255, 255, 255, 0);
+            outline: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        #footer .footer-bottom span {
+            font-size: 11px;
+        }
+
+        #footer .footer-bottom .vent {
+
+            width: 160px;
+            height: 100%;
+            /* background: #ff8a2a; */
+
+            display: inline-block;
+            vertical-align: top;
+            transform: translate(12px, 30px) rotate(-30deg);
+        }
+
+        #footer .footer-bottom .vent>div {
+            display: inline-block;
+            height: 65px;
+            width: 12px;
+            background: #1b76c0;
+            text-align: center;
+            border: 3px solid #1b60c0;
+            border-radius: 15px;
+            margin-right: 12px;
+            box-shadow: inset -4px -4px 0px 0px #9fff3e;
+        }
+
+        #myVideo {
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.03;
+        }
+    </style>
+</head>
+
+<body>
+    <video autoplay muted loop id="myVideo">
+        <source src="./video/Motion Graphics Air Bubbles Under Water Animated Background.mp4" type="video/mp4">
+    </video>
+    <div class="title clearfix">
+        <span>C1ick&C0unt</span>
+        <!-- <section class="icon-list">
+            <i class="nes-icon star"></i>
+        </section>
+        <section class="icon-list">
+            <i class="nes-icon star"></i>
+        </section> -->
+    </div>
+
+    <div class="container">
+        <div id="header">
+            <div></div>
+            <div></div>
+        </div>
+        <div id="content">
+            <div class="contentbox">
+                <div class="screen">
+                    <div id="game">
+                        <!-- <span>target: <span id="target-num">0</span></span> -->
+                        <div class="word-box">
+                            <span>level:<span id="speed-level">0</span></span>
+                            <span>Score:<span id="text-score">0</span></span>
+                            <span>Time:<span id="text-time">0</span></span>
+                        </div>
+                        <div class="icon-box">
+                            <section class="icon-list">
+                                <i class="nes-icon heart "></i>
+                                <i class="nes-icon heart "></i>
+                                <i class="nes-icon heart "></i>
+                            </section>
+                            <section class="icon-list">
+                                <i class="nes-icon trophy"></i>
+                                <i class="nes-icon trophy"></i>
+                                <i class="nes-icon trophy"></i>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <div class="footer-top"><span>CLICKING</span>
+                <span>GAME BOY</span>
+                <i class="fa-solid fa-alien-8bit"></i>
+            </div>
+            <div class="clearfix footer-middle">
+                <div class="cross-box">
+                    <div class="tringle-top"></div>
+                    <div class="tringle-left"></div>
+                    <div class="tringle-right"></div>
+                    <div class="tringle-bottom"></div>
+                    <div class="cross">
+                        <div class="cross-top"></div>
+                        <div class="cross-left"></div>
+                        <div class="cross-circle"></div>
+                    </div>
+                </div>
+                <div class="button-box">
+                    <div class="left"></div>
+                    <div class="right"></div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="select-bottom">
+                    <div class="circle">
+                        <div></div>
+                    </div>
+                    <span>SELECT</span>
+                </div>
+                <div class="start-bottom">
+                    <div class="circle">
+                        <div><button id="btn-start"></button></div>
+                    </div>
+                    <span>START</span>
+                </div>
+                <div class="vent">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let score = 0
+        let countdown = 20
+        let timer = 0
+        let targetnum = 24
+        let speed = 0
+        let trophynum = 0
+        let j = 2
+        function move(zombie) {
+            const top = Math.round(Math.random() * 70) + '%'
+            const left = Math.round(Math.random() * 70) + '%'
+            zombie.stop().animate({ top, left }, 1000, function () {
+                move(zombie)
+            })
+        }
+
+        $('#btn-start').click(function () {
+            // 停用按鈕
+            $(this).attr('disabled', true)
+            // 重設
+            score = 0
+            $('#text-score').text(score)
+            countdown = 20
+            $('#text-time').text(countdown)
+
+            $('#target-num').text(targetnum)
+            // 開始遊戲
+            if ($('.heart').eq(0).css('opacity') == '0') {
+                $('.heart').each(function () {
+                    $(this).css('opacity', '1')
+                })
+            }
+
+            timer = setInterval(function () {
+                // 倒數
+                console.log(countdown);
+                countdown = countdown - 1 * ((10 - speed) / 10)
+                $('#text-time').text(parseInt(countdown))
+
+                if ($('#game .zombie').length < 30) {
+                    const top = Math.round(Math.random() * 90) + '%'
+                    const left = Math.round(Math.random() * 90) + '%'
+                    const num = Math.round(Math.random() * 10) - 4
+                    const zombie = $(`<button class="number nes-btn is-primary" value="${num}" style="top: ${top}; left: ${left}">${num}</button>`)
+                    $('#game').append(zombie)
+                    move(zombie)
+                }
+
+                if (countdown <= 0) {
+                    clearInterval(timer)
+                    // 清空遊戲區域
+                    $('#game button').remove()
+                    // 重新啟用開始按鈕
+                    $('#btn-start').attr('disabled', false)
+                    if (score >= targetnum) {
+
+                        $('#target-num').text(targetnum)
+                        speed++
+                        $('.trophy').eq(trophynum).css('opacity', '1')
+                        trophynum++
+
+
+
+                        Swal.fire({
+                            title: 'YOU WIN!',
+                            text: `Time's up，You get ${score} `,
+                            imageUrl: './images/2.png',
+                            imageWidth: 100,
+                            imageHeight: 100,
+                            imageAlt: 'Custom image',
+                        })
+
+                    } else if ($('.heart').eq(1).css('opacity') != '0') {
+
+                        $('#target-num').text(targetnum)
+                        $('.heart').eq(j).css('opacity', '0')
+                        j--
+
+
+
+                        Swal.fire({
+                            title: 'AGAIN',
+                            text: `Time's up，You get ${score}，But You still have ${j + 1} lifes `,
+                            icon: 'error',
+                        })
+
+                    } else {
+                        targetnum = 24
+                        $('.heart').eq(j).css('opacity', '0')
+                        j = 2
+                        $('.trophy').each(function () {
+                            $(this).css('opacity', '0')
+                        })
+
+
+                        Swal.fire({
+                            title: 'GAME OVER',
+                            text: `Time's up，You get ${score} `,
+
+                            imageUrl: './images/1.png',
+                            imageWidth: 300,
+                            imageHeight: 200,
+                            imageAlt: 'Custom image',
+                        })
+
+                    }
+
+                }
+            }, 1000 - speed * 100)
+        })
+
+        $('#game').on('click', '.number', function () {
+            $(this).remove()
+            $(this).stop()
+            score += parseInt($(this).val())
+            $('#text-score').text(score)
+        })
+    </script>
+</body>
+
+</html>
